@@ -22,4 +22,7 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-Robert BRYAN
+
+
+NOTE:
+Event streamer is located in the homes_controller. If you change the number after "retry:", the refresh rate changes. 1000 = 1 second.
