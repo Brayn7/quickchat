@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @speak.content %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @speak.user %>
+</p>
+
+<%= link_to 'Edit', edit_speak_path(@speak) %> |
+<%= link_to 'Back', speaks_path %>

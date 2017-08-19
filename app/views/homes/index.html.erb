@@ -1,0 +1,23 @@
+<div id="words">
+  
+
+</div>
+<%= form_with(model: speak, remote: true) do |form| %>
+  <% if speak.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(speak.errors.count, "error") %> prohibited this speak from being saved:</h2>
+
+      <ul>
+      <% speak.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.text_field :user %>
+    <%= form.text_field :content %>
+    <%= form.submit %>
+  </div>
+<% end %>
