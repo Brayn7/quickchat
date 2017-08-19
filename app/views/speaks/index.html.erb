@@ -1,29 +1,65 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Speaks</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Content</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @speaks.each do |speak| %>
-      <tr>
-        <td><%= speak.content %></td>
-        <td><%= speak.user %></td>
-        <td><%= link_to 'Show', speak %></td>
-        <td><%= link_to 'Edit', edit_speak_path(speak) %></td>
-        <td><%= link_to 'Destroy', speak, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<div id="remote_container"></div>
+<div id="usr"></div><div id="content"></div>
 <br>
 
-<%= link_to 'New Speak', new_speak_path %>
+<%= form_for [@speak], :remote=> true, id:"talker" do |form| %>
+  <% if @speak.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@speak.errors.count, "error") %> prohibited this speak from being saved:</h2>
+
+      <ul>
+      <% @speak.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.text_field :content, id: :speak_content %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user %>
+    <%= form.text_field :user, id: :speak_user %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+<script>
+  jQuery(document).ready(function() {
+      setTimeout(function() {
+        var source = new EventSource("/homes");
+        source.addEventListener('refresh', function(e) {
+          console.log("refresh")
+          document.getElementById("usr").innerHTML = e.data;
+
+
+
+        });
+        source.addEventListener('grebs', function(x) {
+          console.log("grebs")
+          document.getElementById("content").innerHTML = x.data;
+
+          var xhttp3 = new XMLHttpRequest();
+          xhttp3.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              document.getElementById("remote_container").innerHTML = this.responseText;
+            }
+          };
+          xhttp3.open("GET", "/speaks/new", true);
+          xhttp3.send();
+
+        });
+      }, 1000);
+    });
+    $('#talker').submit(function(e) {
+      e.preventDefault();
+      // Coding
+      //alert("HELLO"); //or  $('#IDModal').modal('hide');
+      return false;
+    });
+</script>

@@ -15,23 +15,5 @@
 //= require_tree .
 //= require 'jquery'
 //= require 'jquery_ujs'
-jQuery(document).ready(function() {
-      setTimeout(function() {
-        var source = new EventSource("/speaks");
-        source.addEventListener('spoken', function(e) {
-          console.log("refresh")
-        });
-          document.getElementById("purses").innerHTML = x.data;
 
-          var xhttp3 = new XMLHttpRequest();
-          xhttp3.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              document.getElementById("info").innerHTML = this.responseText;
-            }
-          };
-          xhttp3.open("GET", "/spoken/");
-          xhttp3.send();
-
-      }, 1000);
-    });
 

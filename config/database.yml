@@ -16,7 +16,8 @@ default: &default
   username: root
   password: MiStY0)7
   socket: /tmp/mysql.sock
-
+  #password: runalot3
+  #socket: /var/run/mysqld/mysqld.sock
 development:
   <<: *default
   database: quickchat_development

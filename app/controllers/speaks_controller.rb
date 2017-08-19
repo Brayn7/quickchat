@@ -1,15 +1,12 @@
 class SpeaksController < ApplicationController
-  include ActionController::Live
   before_action :set_speak, only: [:show, :edit, :update, :destroy]
-
+  
   # GET /speaks
   
   # GET /speaks.json
   def index
-    response.headers['Content-Type'] = 'text/event-stream'
-    sse = SSE.new(response.stream, retry:1000, event:'spoken')
     @speaks = Speak.all
-    sse.write(JSON.dump(@speaks))
+    @speak = Speak.new
   end
 
   # GET /speaks/1
@@ -19,7 +16,9 @@ class SpeaksController < ApplicationController
 
   # GET /speaks/new
   def new
+    @speaks = Speak.all
     @speak = Speak.new
+    render layout: 'x-nil'
   end
 
   # GET /speaks/1/edit
@@ -33,13 +32,14 @@ class SpeaksController < ApplicationController
 
     respond_to do |format|
       if @speak.save
-        format.html { redirect_to @speak, notice: 'Speak was successfully created.' }
+        format.html { }
         format.json { render :show, status: :created, location: @speak }
       else
         format.html { render :new }
         format.json { render json: @speak.errors, status: :unprocessable_entity }
       end
     end
+    
   end
 
   # PATCH/PUT /speaks/1
@@ -47,7 +47,7 @@ class SpeaksController < ApplicationController
   def update
     respond_to do |format|
       if @speak.update(speak_params)
-        format.html { redirect_to @speak, notice: 'Speak was successfully updated.' }
+        format.html { }
         format.json { render :show, status: :ok, location: @speak }
       else
         format.html { render :edit }
@@ -61,7 +61,7 @@ class SpeaksController < ApplicationController
   def destroy
     @speak.destroy
     respond_to do |format|
-      format.html { redirect_to speaks_url, notice: 'Speak was successfully destroyed.' }
+      format.html { }
       format.json { head :no_content }
     end
   end

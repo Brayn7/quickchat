@@ -1,10 +1,24 @@
 class HomesController < ApplicationController
   before_action :set_home, only: [:show, :edit, :update, :destroy]
-
+  include ActionController::Live
   # GET /homes
   # GET /homes.json
   def index
-    @speaks = Speak.all
+    response.headers['Content-Type'] = 'text/event-stream'
+    sse = SSE.new(response.stream, retry: 300, event: "grebs")
+    @pool = pool
+    begin
+      sse.write(@pool)
+    rescue IOError
+      # When the client disconnects, we'll get an IOError on write
+    ensure
+      sse.close
+    end
+  end
+
+  def pool
+    @pool = Speak.all
+    return JSON.dump(@pool)
   end
 
   # GET /homes/1
