@@ -1,5 +1,11 @@
 
-    <% @speaks.each do |speak| %>
-      <a class="chathead"><%= speak.user %><a class="chatstamp">[<%=speak.created_at.getlocal.strftime('%Y-%m-%d %H:%M') %>]</a></a> <p> <%= speak.content %></p>
-    <% end %>
+<% @speaks.each do |speak| %>
+    	<% if speak.user == session[:current_user_id] then
+    		@pull = "text-align: right;"
+	else
+		@pull = ""
+	end %>
+
+      	<p class="chathead" style="<%=@pull%>"><%= speak.user %><a class="chatstamp" style="<%=@pull%>">[<%=speak.created_at.getlocal.strftime('%Y-%m-%d %H:%M') %>]</a><a class="chatbod" style="<%=@pull%>"> <%= speak.content %></a></p>
+<% end %>
 
