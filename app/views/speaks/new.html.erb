@@ -1,5 +1,5 @@
 
     <% @speaks.each do |speak| %>
-      <p><%= speak.user + " " + speak.content %></p>
+      <a class="chathead"><%= speak.user %><a class="chatstamp">[<%=speak.created_at.getlocal.strftime('%Y-%m-%d %H:%M') %>]</a></a> <p> <%= speak.content %></p>
     <% end %>
 

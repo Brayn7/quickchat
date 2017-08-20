@@ -1,15 +1,16 @@
 <div id="remote_container"></div>
 <div id="usr"></div><div id="content"></div>
+<%=%>
 <nav class="navbar navbar-fixed-bottom navbar-inverse">
 	<div id="chatbar" class="container-fluid">
 		<div class="navbar-header navbar-right">
-	      		<a class="navbar-brand" href="#"><%= @user.username %></a>
+	      		<a class="navbar-brand" href="#"><%= session[:current_user_id] + " | " + @room.room %></a>
 	    	</div>
 		<%= form_for [@speak], :remote=> true, id:"talker", :html => {class: "navbar-form navbar-left"} do |form| %>
 			<div class="form-group">
 					<%= form.text_field :content, class: "form-control" %>
 			</div>
-			<%= form.hidden_field :user, id: :speak_user, :value => @user.username %>
+			<%= form.hidden_field :user, id: :speak_user, :value => session[:current_user_id]  %>
 			<%= form.submit(style: "display:none") %>
 			
 		<% end %>

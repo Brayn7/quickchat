@@ -13,3 +13,10 @@
  *= require_tree .
  *= require_self
  */
+.chathead {
+	font-weight: bold;
+}
+.chatstamp {
+	font-weight: lighter;
+	font-size: 9px
+}

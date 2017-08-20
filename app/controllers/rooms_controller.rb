@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
-
+  before_action :require_login
   # GET /rooms
   # GET /rooms.json
   def index
@@ -10,14 +10,15 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    @speaks = Speak.last(10)
+    @speaks = Speak.where(:room_id => @room.id).last(10)
     @speak = Speak.new
-    @user = User.find(params[:user].to_i)
   end
 
   # GET /rooms/new
   def new
     @room = Room.new
+    o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+    @string = (0...50).map { o[rand(o.length)] }.join
   end
 
   # GET /rooms/1/edit
@@ -72,6 +73,6 @@ class RoomsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def room_params
-      params.require(:room).permit(:room, :owner)
+      params.require(:room).permit(:room, :owner, :rando)
     end
 end

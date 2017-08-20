@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170820003354) do
+ActiveRecord::Schema.define(version: 20170820163647) do
 
   create_table "chats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "content"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20170820003354) do
     t.string "owner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "rando"
   end
 
   create_table "speaks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -49,6 +50,8 @@ ActiveRecord::Schema.define(version: 20170820003354) do
     t.string "user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "room_id"
+    t.index ["room_id"], name: "index_speaks_on_room_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -61,4 +64,5 @@ ActiveRecord::Schema.define(version: 20170820003354) do
 
   add_foreign_key "permissions", "rooms"
   add_foreign_key "permissions", "users"
+  add_foreign_key "speaks", "rooms"
 end

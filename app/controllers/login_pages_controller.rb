@@ -4,12 +4,26 @@ class LoginPagesController < ApplicationController
   # GET /login_pages
   # GET /login_pages.json
   def index
+    session[:current_room] = nil
+    session[:current_user_id] = nil
+    puts session[:current_user_id]
     if params[:user]
-      @permissions = Permission.where( {user_id: params[:user] .to_i, room_id: params[:room].to_i} ).count
-      if @permissions > 0 then
-        @room = Room.find(params[:room].to_i)
-        redirect_to room_path(@room.id, :user => params[:user])
+      @room = Room.find_by(rando: params[:room])
+      @user = User.find_by(username: params[:user])
+      begin
+        @permissions = Permission.where( {user_id: @user.id, room_id: @room.id} )
+        if @permissions.count > 0 then
+          puts 'yes'
+          session[:current_user_id] = @user.username
+          session[:current_room] =  @room.rando
+          redirect_to @room
+        end
+      rescue
+        if @room.nil? then
+          puts 'invalid room'
+        end
       end
+      
     end
   end
 

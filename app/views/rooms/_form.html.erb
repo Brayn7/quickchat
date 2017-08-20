@@ -18,7 +18,11 @@
 
   <div class="field">
     <%= form.label :owner %>
-    <%= form.text_field :owner, id: :room_owner %>
+    <%= form.text_field :owner, id: :room_owner, value: session[:current_user_id] %>
+  </div>
+  <div class="field">
+    <%= form.label :rando %>
+    <%= form.text_field :rando, id: :room_rando, value: @string %>
   </div>
 
   <div class="actions">

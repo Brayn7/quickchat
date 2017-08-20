@@ -1,5 +1,6 @@
 class HomesController < ApplicationController
   before_action :set_home, only: [:show, :edit, :update, :destroy]
+  before_action :require_login
   include ActionController::Live
   # GET /homes
   # GET /homes.json

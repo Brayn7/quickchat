@@ -1,6 +1,6 @@
 class SpeaksController < ApplicationController
   before_action :set_speak, only: [:show, :edit, :update, :destroy]
-  
+  before_action :require_login
   # GET /speaks
   
   # GET /speaks.json
@@ -16,7 +16,8 @@ class SpeaksController < ApplicationController
 
   # GET /speaks/new
   def new
-    @speaks = Speak.all.last(10)
+    @room = Room.find_by(rando: session[:current_room])
+    @speaks = Speak.where(:room_id => @room.id).last(10)
     @speak = Speak.new
     render layout: 'x-nil'
   end
@@ -29,9 +30,10 @@ class SpeaksController < ApplicationController
   # POST /speaks.json
   def create
     @speak = Speak.new(speak_params)
-
+    
     respond_to do |format|
       if @speak.save
+        @speak.update(room_id: Room.find_by(rando: session[:current_room]).id)
         format.html { }
         format.json { render :show, status: :created, location: @speak }
       else
@@ -74,6 +76,6 @@ class SpeaksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def speak_params
-      params.require(:speak).permit(:content, :user)
+      params.require(:speak).permit(:content, :user, :room_id)
     end
 end
