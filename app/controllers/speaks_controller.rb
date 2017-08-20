@@ -16,7 +16,7 @@ class SpeaksController < ApplicationController
 
   # GET /speaks/new
   def new
-    @speaks = Speak.all
+    @speaks = Speak.all.last(10)
     @speak = Speak.new
     render layout: 'x-nil'
   end

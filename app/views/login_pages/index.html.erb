@@ -1,0 +1,5 @@
+<%= form_tag('', :method => "get", id: "search-form") do %>
+  <%= text_field_tag :user, params[:user], :autofocus => true, placeholder: "Input UserName"  %>
+  <%= text_field_tag :room, params[:room], :autofocus => false, placeholder: "Input UserName"  %>
+  <%= submit_tag %>
+<% end %>

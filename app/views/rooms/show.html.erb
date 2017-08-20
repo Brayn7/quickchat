@@ -1,0 +1,46 @@
+<div id="remote_container"></div>
+<div id="usr"></div><div id="content"></div>
+<nav class="navbar navbar-fixed-bottom navbar-inverse">
+	<div id="chatbar" class="container-fluid">
+		<div class="navbar-header navbar-right">
+	      		<a class="navbar-brand" href="#"><%= @user.username %></a>
+	    	</div>
+		<%= form_for [@speak], :remote=> true, id:"talker", :html => {class: "navbar-form navbar-left"} do |form| %>
+			<div class="form-group">
+					<%= form.text_field :content, class: "form-control" %>
+			</div>
+			<%= form.hidden_field :user, id: :speak_user, :value => @user.username %>
+			<%= form.submit(style: "display:none") %>
+			
+		<% end %>
+	</div>
+</nav>
+<script>
+  jQuery(document).ready(function() {
+	$("#new_speak").bind("ajax:complete", function(event,xhr,status){
+		$('#speak_content').val('');
+	});
+	setTimeout(function() {
+	var source = new EventSource("/homes");
+	source.addEventListener('refresh', function(e) {
+		console.log("refresh")
+		document.getElementById("usr").innerHTML = e.data;
+	});
+	source.addEventListener('grebs', function(x) {
+	//console.log("grebs")
+	document.getElementById("content").innerHTML = x.data;
+
+	var xhttp3 = new XMLHttpRequest();
+	xhttp3.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+	document.getElementById("remote_container").innerHTML = this.responseText;
+	}
+	};
+	xhttp3.open("GET", "/speaks/new", true);
+	xhttp3.send();
+
+	});
+	}, 1000);
+	});
+
+</script>

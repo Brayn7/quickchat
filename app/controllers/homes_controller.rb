@@ -17,7 +17,7 @@ class HomesController < ApplicationController
   end
 
   def pool
-    @pool = Speak.all
+    @pool = Speak.all.last(10)
     return JSON.dump(@pool)
   end
 
