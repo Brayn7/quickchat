@@ -1,12 +1,14 @@
 class SpeaksController < ApplicationController
   before_action :set_speak, only: [:show, :edit, :update, :destroy]
   before_action :require_login
+  include ActionController::Live
   # GET /speaks
   
   # GET /speaks.json
   def index
     @speaks = Speak.all
     @speak = Speak.new
+    
   end
 
   # GET /speaks/1
@@ -17,7 +19,7 @@ class SpeaksController < ApplicationController
   # GET /speaks/new
   def new
     @room = Room.find_by(rando: session[:current_room])
-    @speaks = Speak.where(:room_id => @room.id).last(10)
+    @speaks = Speak.where(:room_id => @room.id).last(20)
     @speak = Speak.new
     render layout: 'x-nil'
   end
@@ -30,9 +32,18 @@ class SpeaksController < ApplicationController
   # POST /speaks.json
   def create
     @speak = Speak.new(speak_params)
+    response.headers['Content-Type'] = 'text/event-stream'
+    sse = SSE.new(response.stream)
     
     respond_to do |format|
       if @speak.save
+      begin
+        sse.write({name: @speak.content}, event: "scrollr")
+      rescue IOError
+        # When the client disconnects, we'll get an IOError on write
+      ensure
+        sse.close
+      end
         @speak.update(room_id: Room.find_by(rando: session[:current_room]).id)
         format.html { }
         format.json { render :show, status: :created, location: @speak }

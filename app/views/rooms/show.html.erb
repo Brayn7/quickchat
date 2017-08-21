@@ -1,11 +1,27 @@
-<div id="remote_container"></div>
+<div id="remote_container" class="container"></div>
 <div id="usr"></div><div id="content"></div>
 <%=%>
 <nav class="navbar navbar-fixed-bottom navbar-inverse">
 	<div id="chatbar" class="container-fluid">
-		<div class="navbar-header navbar-right">
-	      		<a class="navbar-brand" href="#"><%= session[:current_user_id] + " | " + @room.room %></a>
-	    	</div>
+	    	<div class="navbar-header">
+      			<a class="navbar-brand" href="#">qkcht</a>
+    		</div>
+		<ul class="nav navbar-nav">
+			<li class="active dropup" >
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+					<%= session[:current_user_id] + " | " + @room.room %>
+					<span class="caret"></span></button>
+				</a>
+			<ul class="dropdown-menu">
+				<li><a href="#">Room Permissions</a></li>
+				<li><a href="#">Switch Rooms</a></li>
+			</ul>
+			</li>
+		</ul>
+	    	<ul class="nav navbar-nav navbar-right">
+	    		<li><a href="#" id="datascr"></a></li>
+			<li><a href="/login_pages">log out</a></li>
+		</ul>
 		<%= form_for [@speak], :remote=> true, id:"talker", :html => {class: "navbar-form navbar-left"} do |form| %>
 			<div class="form-group">
 					<%= form.text_field :content, class: "form-control" %>
@@ -15,33 +31,44 @@
 			
 		<% end %>
 	</div>
+	
 </nav>
 <script>
   jQuery(document).ready(function() {
 	$("#new_speak").bind("ajax:complete", function(event,xhr,status){
 		$('#speak_content').val('');
 	});
+	
+	var myDiv = $("#remote_container");
+	var body = ("body");
+	//myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") - myDiv.height() }, 3000);
+	
 	setTimeout(function() {
-	var source = new EventSource("/homes");
-	source.addEventListener('refresh', function(e) {
-		console.log("refresh")
-		document.getElementById("usr").innerHTML = e.data;
-	});
-	source.addEventListener('grebs', function(x) {
-	//console.log("grebs")
-	document.getElementById("content").innerHTML = x.data;
 
-	var xhttp3 = new XMLHttpRequest();
-	xhttp3.onreadystatechange = function() {
-	if (this.readyState == 4 && this.status == 200) {
-	document.getElementById("remote_container").innerHTML = this.responseText;
-	}
-	};
-	xhttp3.open("GET", "/speaks/new", true);
-	xhttp3.send();
+		var source = new EventSource("/homes");
+		source.addEventListener('refresh', function(e) {
+			console.log("refresh")
+			//document.getElementById("usr").innerHTML = e.data;
+		});
+		source.addEventListener('grebs', function(x) {
+		//console.log("grebs")
+		//document.getElementById("content").innerHTML = x.data;
 
-	});
+		var xhttp3 = new XMLHttpRequest();
+		xhttp3.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		document.getElementById("remote_container").innerHTML = this.responseText;
+		}
+		};
+		xhttp3.open("GET", "/speaks/new", true);
+		xhttp3.send();
+
+		});
 	}, 1000);
+	setTimeout(function() {
+		$("#datascr").text( myDiv.prop("scrollHeight") + " | " + myDiv.scrollTop() + " | " + myDiv.height());
+		myDiv.animate({ scrollTop: myDiv.prop("scrollHeight") }, 3000); 
+	}, 2000);
 	});
 
 </script>

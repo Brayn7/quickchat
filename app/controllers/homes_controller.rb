@@ -1,12 +1,12 @@
 class HomesController < ApplicationController
   before_action :set_home, only: [:show, :edit, :update, :destroy]
-  before_action :require_login
+
   include ActionController::Live
   # GET /homes
   # GET /homes.json
   def index
     response.headers['Content-Type'] = 'text/event-stream'
-    sse = SSE.new(response.stream, retry: 300, event: "grebs")
+    sse = SSE.new(response.stream, retry: 1000, event: "grebs")
     @pool = pool
     begin
       sse.write(@pool)
@@ -18,7 +18,7 @@ class HomesController < ApplicationController
   end
 
   def pool
-    @pool = Speak.all.last(10)
+    @pool = Speak.all
     return JSON.dump(@pool)
   end
 

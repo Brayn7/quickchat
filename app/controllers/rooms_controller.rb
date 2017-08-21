@@ -1,6 +1,8 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
   before_action :require_login
+
+  include ActionController::Live
   # GET /rooms
   # GET /rooms.json
   def index
@@ -12,6 +14,8 @@ class RoomsController < ApplicationController
   def show
     @speaks = Speak.where(:room_id => @room.id).last(10)
     @speak = Speak.new
+    
+
   end
 
   # GET /rooms/new

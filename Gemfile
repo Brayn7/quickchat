@@ -13,7 +13,7 @@ gem 'mysql2', '>= 0.3.18', '< 0.5'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
-
+gem 'pg'
 # Added at 2017-08-19 09:37:37 -0400 by RobertBryan:
 gem "rb-fsevent", "~> 0.10.2"
 

@@ -14,10 +14,17 @@ default: &default
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  #password: MiStY0)7
-  #socket: /tmp/mysql.sock
-  password: runalot3
-  socket: /var/run/mysqld/mysqld.sock
+  password: MiStY0)7
+  socket: /tmp/mysql.sock
+  #password: runalot3
+  #socket: /var/run/mysqld/mysqld.sock
+  #adapter: postgresql
+  #encoding: unicode
+  #pool: 5
+  #username: quickchat
+  #password: qkcht
+  #host: localhost
+  #port: 5432
 development:
   <<: *default
   database: quickchat_development

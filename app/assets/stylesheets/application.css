@@ -23,3 +23,7 @@
 .chatbod {
 	font-weight: lighter;
 }
+#remote_container {
+	height: 500px;
+	overflow: auto;
+}
