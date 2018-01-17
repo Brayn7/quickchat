@@ -12,26 +12,23 @@
 
 ActiveRecord::Schema.define(version: 20170820163647) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "chats", force: :cascade do |t|
+  create_table "chats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "homes", force: :cascade do |t|
+  create_table "homes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "login_pages", force: :cascade do |t|
+  create_table "login_pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "permissions", force: :cascade do |t|
+  create_table "permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.bigint "room_id"
     t.datetime "created_at", null: false
@@ -40,7 +37,7 @@ ActiveRecord::Schema.define(version: 20170820163647) do
     t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
-  create_table "rooms", force: :cascade do |t|
+  create_table "rooms", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "room"
     t.string "owner"
     t.datetime "created_at", null: false
@@ -48,7 +45,7 @@ ActiveRecord::Schema.define(version: 20170820163647) do
     t.string "rando"
   end
 
-  create_table "speaks", force: :cascade do |t|
+  create_table "speaks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "content"
     t.string "user"
     t.datetime "created_at", null: false
@@ -57,7 +54,7 @@ ActiveRecord::Schema.define(version: 20170820163647) do
     t.index ["room_id"], name: "index_speaks_on_room_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "username"
     t.string "email"
     t.string "icon"
